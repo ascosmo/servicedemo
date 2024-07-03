@@ -1,294 +1,34 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: service-demo
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: blue-dep-diago
-  namespace: unix
-  uid: c3bafa86-721e-4c66-be14-ecf95f064535
-  resourceVersion: '177315436'
-  generation: 8
-  creationTimestamp: '2023-04-12T19:03:59Z'
+  name: black-dep
+  namespace: service-demo
   labels:
     app: ingress-demo
-  annotations:
-    deployment.kubernetes.io/revision: '1'
-    kubectl.kubernetes.io/last-applied-configuration: >
-      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"ingress-demo"},"name":"blue-dep-diago","namespace":"unix"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"ingress-blue"}},"template":{"metadata":{"labels":{"app":"ingress-blue","color":"blue"}},"spec":{"containers":[{"env":[{"name":"IMAGE_COLOR","value":"blue"},{"name":"NODE_IP","valueFrom":{"fieldRef":{"fieldPath":"status.hostIP"}}},{"name":"NODE_NAME","valueFrom":{"fieldRef":{"fieldPath":"spec.nodeName"}}},{"name":"POD_IP","valueFrom":{"fieldRef":{"fieldPath":"status.podIP"}}},{"name":"POD_NAME","valueFrom":{"fieldRef":{"fieldPath":"metadata.name"}}},{"name":"POD_NAMESPACE","valueFrom":{"fieldRef":{"fieldPath":"metadata.namespace"}}},{"name":"POD_SERVICE_ACCOUNT","valueFrom":{"fieldRef":{"fieldPath":"spec.serviceAccountName"}}},{"name":"POD_CPU_REQUEST","valueFrom":{"resourceFieldRef":{"containerName":"servicedemo","resource":"requests.cpu"}}},{"name":"POD_CPU_LIMIT","valueFrom":{"resourceFieldRef":{"containerName":"servicedemo","resource":"limits.cpu"}}},{"name":"POD_MEM_REQUEST","valueFrom":{"resourceFieldRef":{"containerName":"servicedemo","resource":"requests.memory"}}},{"name":"POD_MEM_LIMIT","valueFrom":{"resourceFieldRef":{"containerName":"servicedemo","resource":"limits.memory"}}}],"image":"acrcorpsharedtim1.azurecr.io/servicedemo:1.0","imagePullPolicy":"Always","name":"servicedemo","ports":[{"containerPort":80,"protocol":"TCP"}],"resources":{"limits":{"cpu":"300m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"volumeMounts":[{"mountPath":"/etc/podinfo","name":"podinfo"}]}],"tolerations":[{"effect":"NoSchedule","key":"workload-type","operator":"Equal","value":"unix"}],"volumes":[{"downwardAPI":{"items":[{"fieldRef":{"fieldPath":"metadata.labels"},"path":"labels"},{"fieldRef":{"fieldPath":"metadata.annotations"},"path":"annotations"}]},"name":"podinfo"}]}}}}
-  managedFields:
-    - manager: kubectl-client-side-apply
-      operation: Update
-      apiVersion: apps/v1
-      time: '2023-04-12T19:03:59Z'
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:metadata:
-          f:annotations:
-            .: {}
-            f:kubectl.kubernetes.io/last-applied-configuration: {}
-          f:labels:
-            .: {}
-            f:app: {}
-        f:spec:
-          f:progressDeadlineSeconds: {}
-          f:revisionHistoryLimit: {}
-          f:selector: {}
-          f:strategy:
-            f:rollingUpdate:
-              .: {}
-              f:maxSurge: {}
-              f:maxUnavailable: {}
-            f:type: {}
-          f:template:
-            f:metadata:
-              f:labels:
-                .: {}
-                f:app: {}
-                f:color: {}
-            f:spec:
-              f:containers:
-                k:{"name":"servicedemo"}:
-                  .: {}
-                  f:env:
-                    .: {}
-                    k:{"name":"IMAGE_COLOR"}:
-                      .: {}
-                      f:name: {}
-                      f:value: {}
-                    k:{"name":"NODE_IP"}:
-                      .: {}
-                      f:name: {}
-                      f:valueFrom:
-                        .: {}
-                        f:fieldRef: {}
-                    k:{"name":"NODE_NAME"}:
-                      .: {}
-                      f:name: {}
-                      f:valueFrom:
-                        .: {}
-                        f:fieldRef: {}
-                    k:{"name":"POD_CPU_LIMIT"}:
-                      .: {}
-                      f:name: {}
-                      f:valueFrom:
-                        .: {}
-                        f:resourceFieldRef: {}
-                    k:{"name":"POD_CPU_REQUEST"}:
-                      .: {}
-                      f:name: {}
-                      f:valueFrom:
-                        .: {}
-                        f:resourceFieldRef: {}
-                    k:{"name":"POD_IP"}:
-                      .: {}
-                      f:name: {}
-                      f:valueFrom:
-                        .: {}
-                        f:fieldRef: {}
-                    k:{"name":"POD_MEM_LIMIT"}:
-                      .: {}
-                      f:name: {}
-                      f:valueFrom:
-                        .: {}
-                        f:resourceFieldRef: {}
-                    k:{"name":"POD_MEM_REQUEST"}:
-                      .: {}
-                      f:name: {}
-                      f:valueFrom:
-                        .: {}
-                        f:resourceFieldRef: {}
-                    k:{"name":"POD_NAME"}:
-                      .: {}
-                      f:name: {}
-                      f:valueFrom:
-                        .: {}
-                        f:fieldRef: {}
-                    k:{"name":"POD_NAMESPACE"}:
-                      .: {}
-                      f:name: {}
-                      f:valueFrom:
-                        .: {}
-                        f:fieldRef: {}
-                    k:{"name":"POD_SERVICE_ACCOUNT"}:
-                      .: {}
-                      f:name: {}
-                      f:valueFrom:
-                        .: {}
-                        f:fieldRef: {}
-                  f:image: {}
-                  f:imagePullPolicy: {}
-                  f:name: {}
-                  f:ports:
-                    .: {}
-                    k:{"containerPort":80,"protocol":"TCP"}:
-                      .: {}
-                      f:containerPort: {}
-                      f:protocol: {}
-                  f:resources:
-                    .: {}
-                    f:limits:
-                      .: {}
-                      f:cpu: {}
-                      f:memory: {}
-                    f:requests:
-                      .: {}
-                      f:cpu: {}
-                      f:memory: {}
-                  f:terminationMessagePath: {}
-                  f:terminationMessagePolicy: {}
-                  f:volumeMounts:
-                    .: {}
-                    k:{"mountPath":"/etc/podinfo"}:
-                      .: {}
-                      f:mountPath: {}
-                      f:name: {}
-              f:dnsPolicy: {}
-              f:restartPolicy: {}
-              f:schedulerName: {}
-              f:securityContext: {}
-              f:terminationGracePeriodSeconds: {}
-              f:tolerations: {}
-              f:volumes:
-                .: {}
-                k:{"name":"podinfo"}:
-                  .: {}
-                  f:downwardAPI:
-                    .: {}
-                    f:defaultMode: {}
-                    f:items: {}
-                  f:name: {}
-    - manager: kube-controller-manager
-      operation: Update
-      apiVersion: apps/v1
-      time: '2023-04-13T20:32:03Z'
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:metadata:
-          f:annotations:
-            f:deployment.kubernetes.io/revision: {}
-        f:status:
-          f:conditions:
-            .: {}
-            k:{"type":"Available"}:
-              .: {}
-              f:lastTransitionTime: {}
-              f:lastUpdateTime: {}
-              f:message: {}
-              f:reason: {}
-              f:status: {}
-              f:type: {}
-            k:{"type":"Progressing"}:
-              .: {}
-              f:lastTransitionTime: {}
-              f:lastUpdateTime: {}
-              f:message: {}
-              f:reason: {}
-              f:status: {}
-              f:type: {}
-          f:observedGeneration: {}
-      subresource: status
-  selfLink: /apis/apps/v1/namespaces/unix/deployments/blue-dep-diago
-status:
-  observedGeneration: 8
-  conditions:
-    - type: Progressing
-      status: 'True'
-      lastUpdateTime: '2023-04-12T19:04:00Z'
-      lastTransitionTime: '2023-04-12T19:03:59Z'
-      reason: NewReplicaSetAvailable
-      message: ReplicaSet "blue-dep-diago-668859848b" has successfully progressed.
-    - type: Available
-      status: 'True'
-      lastUpdateTime: '2023-04-13T17:14:15Z'
-      lastTransitionTime: '2023-04-13T17:14:15Z'
-      reason: MinimumReplicasAvailable
-      message: Deployment has minimum availability.
 spec:
-  replicas: 0
+  replicas: 2
   selector:
     matchLabels:
-      app: ingress-blue
+      app: ingress-black
   template:
     metadata:
-      creationTimestamp: null
       labels:
-        app: ingress-blue
-        color: blue
+        app: ingress-black
+        color: black
     spec:
-      volumes:
-        - name: podinfo
-          downwardAPI:
-            items:
-              - path: labels
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.labels
-              - path: annotations
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.annotations
-            defaultMode: 420
       containers:
         - name: servicedemo
-          image: acrcorpsharedtim1.azurecr.io/servicedemo:1.0
+          image: ascosmo/servicedemo:1.0
           ports:
             - containerPort: 80
               protocol: TCP
-          env:
-            - name: IMAGE_COLOR
-              value: blue
-            - name: NODE_IP
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: status.hostIP
-            - name: NODE_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: spec.nodeName
-            - name: POD_IP
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: status.podIP
-            - name: POD_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.name
-            - name: POD_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.namespace
-            - name: POD_SERVICE_ACCOUNT
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: spec.serviceAccountName
-            - name: POD_CPU_REQUEST
-              valueFrom:
-                resourceFieldRef:
-                  containerName: servicedemo
-                  resource: requests.cpu
-                  divisor: '0'
-            - name: POD_CPU_LIMIT
-              valueFrom:
-                resourceFieldRef:
-                  containerName: servicedemo
-                  resource: limits.cpu
-                  divisor: '0'
-            - name: POD_MEM_REQUEST
-              valueFrom:
-                resourceFieldRef:
-                  containerName: servicedemo
-                  resource: requests.memory
-                  divisor: '0'
-            - name: POD_MEM_LIMIT
-              valueFrom:
-                resourceFieldRef:
-                  containerName: servicedemo
-                  resource: limits.memory
-                  divisor: '0'
+          imagePullPolicy: Always
           resources:
             limits:
               cpu: 300m
@@ -296,26 +36,331 @@ spec:
             requests:
               cpu: 100m
               memory: 128Mi
+          env:
+            - name: IMAGE_COLOR
+              value: black
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+            - name: POD_CPU_REQUEST
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: requests.cpu
+            - name: POD_CPU_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: limits.cpu
+            - name: POD_MEM_REQUEST
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: requests.memory
+            - name: POD_MEM_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: limits.memory
           volumeMounts:
             - name: podinfo
               mountPath: /etc/podinfo
-          terminationMessagePath: /dev/termination-log
-          terminationMessagePolicy: File
+      volumes:
+        - name: podinfo
+          downwardAPI:
+            items:
+              - path: "labels"
+                fieldRef:
+                  fieldPath: metadata.labels
+              - path: "annotations"
+                fieldRef:
+                  fieldPath: metadata.annotations
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: red-dep
+  namespace: service-demo
+  labels:
+    app: ingress-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ingress-red
+  template:
+    metadata:
+      labels:
+        app: ingress-red
+        color: black
+    spec:
+      containers:
+        - name: servicedemo
+          image: ascosmo/servicedemo:1.0
+          ports:
+            - containerPort: 80
+              protocol: TCP
           imagePullPolicy: Always
-      restartPolicy: Always
-      terminationGracePeriodSeconds: 30
-      dnsPolicy: ClusterFirst
-      securityContext: {}
-      schedulerName: default-scheduler
-      tolerations:
-        - key: workload-type
-          operator: Equal
-          value: unix
-          effect: NoSchedule
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 25%
-      maxSurge: 25%
-  revisionHistoryLimit: 10
-  progressDeadlineSeconds: 600
+          resources:
+            limits:
+              cpu: 300m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          env:
+            - name: IMAGE_COLOR
+              value: red
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+            - name: POD_CPU_REQUEST
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: requests.cpu
+            - name: POD_CPU_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: limits.cpu
+            - name: POD_MEM_REQUEST
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: requests.memory
+            - name: POD_MEM_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: limits.memory
+          volumeMounts:
+            - name: podinfo
+              mountPath: /etc/podinfo
+      volumes:
+        - name: podinfo
+          downwardAPI:
+            items:
+              - path: "labels"
+                fieldRef:
+                  fieldPath: metadata.labels
+              - path: "annotations"
+                fieldRef:
+                  fieldPath: metadata.annotations
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: yellow-dep
+  namespace: service-demo
+  labels:
+    app: ingress-demo
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ingress-yellow
+  template:
+    metadata:
+      labels:
+        app: ingress-yellow
+        color: yellow
+    spec:
+      containers:
+        - name: servicedemo
+          image: ascosmo/servicedemo:1.0
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 300m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          env:
+            - name: IMAGE_COLOR
+              value: yellow
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+            - name: POD_CPU_REQUEST
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: requests.cpu
+            - name: POD_CPU_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: limits.cpu
+            - name: POD_MEM_REQUEST
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: requests.memory
+            - name: POD_MEM_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: limits.memory
+          volumeMounts:
+            - name: podinfo
+              mountPath: /etc/podinfo
+      volumes:
+        - name: podinfo
+          downwardAPI:
+            items:
+              - path: "labels"
+                fieldRef:
+                  fieldPath: metadata.labels
+              - path: "annotations"
+                fieldRef:
+                  fieldPath: metadata.annotations
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: black-svc
+  namespace: service-demo
+  labels:
+    app: ingress-demo
+spec:
+  ports:
+    - port: 8100
+      targetPort: 80
+      name: web
+  selector:
+    app: ingress-black
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: yellow-svc
+  namespace: service-demo
+  labels:
+    app: ingress-demo
+spec:
+  ports:
+    - port: 8100
+      targetPort: 80
+      name: web
+  selector:
+    app: ingress-yellow
+  type: ClusterIP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: red-svc
+  namespace: service-demo
+  labels:
+    app: ingress-demo
+spec:
+  ports:
+    - port: 8100
+      targetPort: 80
+      name: web
+  selector:
+    app: ingress-red
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: colors-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: servicedemo.172.16.24.128.nip.io
+      http:
+        paths:
+          - path: /black/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: black-svc
+                port:
+                  number: 8100
+          - path: /red/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: red-svc
+                port:
+                  number: 8100
+          - path: /yellow/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: yellow-svc
+                port:
+                  number: 8100
