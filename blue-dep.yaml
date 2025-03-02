@@ -12,7 +12,7 @@ metadata:
   labels:
     app: ingress-demo
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: ingress-black
@@ -105,7 +105,7 @@ metadata:
   labels:
     app: ingress-demo
 spec:
-  replicas: 2
+  replicas: 0
   selector:
     matchLabels:
       app: ingress-red
@@ -198,7 +198,7 @@ metadata:
   labels:
     app: ingress-demo
 spec:
-  replicas: 2
+  replicas: 0
   selector:
     matchLabels:
       app: ingress-yellow
@@ -335,6 +335,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: colors-ingress
+  namespace: service-demo
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /$1
 spec:

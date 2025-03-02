@@ -1,0 +1,288 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: service-demo
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: black-dep
+  namespace: service-demo
+  labels:
+    app: ingress-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ingress-black
+  template:
+    metadata:
+      labels:
+        app: ingress-black
+        color: black
+    spec:
+      containers:
+        - name: servicedemo
+          image: ascosmo/servicedemo:1.0
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 300m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          env:
+            - name: IMAGE_COLOR
+              value: black
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+            - name: POD_CPU_REQUEST
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: requests.cpu
+            - name: POD_CPU_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: limits.cpu
+            - name: POD_MEM_REQUEST
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: requests.memory
+            - name: POD_MEM_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: limits.memory
+          volumeMounts:
+            - name: podinfo
+              mountPath: /etc/podinfo
+      volumes:
+        - name: podinfo
+          downwardAPI:
+            items:
+              - path: "labels"
+                fieldRef:
+                  fieldPath: metadata.labels
+              - path: "annotations"
+                fieldRef:
+                  fieldPath: metadata.annotations
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: black-svc
+  namespace: service-demo
+  labels:
+    app: ingress-demo
+spec:
+  ports:
+    - port: 8100
+      targetPort: 80
+      name: web
+  selector:
+    app: ingress-black
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: green-dep
+  namespace: service-demo
+  labels:
+    app: ingress-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ingress-green
+  template:
+    metadata:
+      labels:
+        app: ingress-green
+        color: green
+    spec:
+      containers:
+        - name: servicedemo
+          image: ascosmo/servicedemo:1.0
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 300m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          env:
+            - name: IMAGE_COLOR
+              value: green
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: POD_SERVICE_ACCOUNT
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.serviceAccountName
+            - name: POD_CPU_REQUEST
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: requests.cpu
+            - name: POD_CPU_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: limits.cpu
+            - name: POD_MEM_REQUEST
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: requests.memory
+            - name: POD_MEM_LIMIT
+              valueFrom:
+                resourceFieldRef:
+                  containerName: servicedemo
+                  resource: limits.memory
+          volumeMounts:
+            - name: podinfo
+              mountPath: /etc/podinfo
+      volumes:
+        - name: podinfo
+          downwardAPI:
+            items:
+              - path: "labels"
+                fieldRef:
+                  fieldPath: metadata.labels
+              - path: "annotations"
+                fieldRef:
+                  fieldPath: metadata.annotations
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: green-svc
+  namespace: service-demo
+  labels:
+    app: ingress-demo
+spec:
+  ports:
+    - port: 8100
+      targetPort: 80
+      name: web
+  selector:
+    app: ingress-green
+  type: ClusterIP
+---
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: colors-gateway
+  namespace: service-demo
+spec:
+  selector:
+    istio: ingressgateway # Usa o Istio Ingress Gateway padrão
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - servicedemo-172-16-24-128.nip.io
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: colors-virtualservice
+  namespace: service-demo
+spec:
+  hosts:
+    - servicedemo-172-16-24-128.nip.io
+  gateways:
+    - colors-gateway
+  http:
+    - match:
+      - uri:
+          prefix: "/black/"
+      rewrite:
+        uri: "/"
+      route:
+      - destination:
+          host: black-svc
+          port:
+            number: 8100
+        weight: 10    #10% de chamadas para o black
+      - destination:
+          host: green-svc
+          port:
+            number: 8100
+        weight: 90    #90% de chamadas para o green
+    - match:
+      - uri:
+          prefix: "/green/"
+      rewrite:
+        uri: "/"
+      route:
+      - destination:
+          host: green-svc
+          port:
+            number: 8100
+        weight: 90    #90% de chamadas para o green
+      - destination:
+          host: black-svc
+          port:
+            number: 8100
+        weight: 10    #10% para green
+---
+
+#http://servicedemo-172-16-24-128.nip.io:32619/black/
+
+#http://servicedemo-172-16-24-128.nip.io:32619/green/
